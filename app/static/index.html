@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#4f6ef7">
+<title>AI 作业批改</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>AI 作业批改</h1>
+  <button id="btn-history" class="icon-btn" title="批改历史">历史</button>
+</header>
+
+<main>
+  <!-- 第 1 步：上传 -->
+  <section id="view-upload" class="view">
+    <div class="card">
+      <label class="drop">
+        <input type="file" id="file-hw" accept="image/*" multiple hidden>
+        <div class="drop-inner">
+          <span class="icon">📸</span>
+          <b>拍摄 / 选择作业照片</b>
+          <small>整页拍摄即可，可多张，AI 之前会先在本地分割成单题</small>
+        </div>
+      </label>
+      <div id="preview-hw" class="thumbs"></div>
+
+      <label class="drop">
+        <input type="file" id="file-ans" accept="image/*" multiple hidden>
+        <div class="drop-inner">
+          <span class="icon">📄</span>
+          <b>拍摄 / 选择答案页（可选）</b>
+          <small>没有答案页时，AI 会依据学科知识判断并注明</small>
+        </div>
+      </label>
+      <div id="preview-ans" class="thumbs"></div>
+
+      <input id="subject" list="subject-list" placeholder="科目 / 年级（可选，如：初三数学）">
+      <datalist id="subject-list">
+        <option>初三数学</option><option>初三物理</option><option>初三化学</option>
+        <option>初三英语</option><option>初三语文</option><option>初二数学</option>
+      </datalist>
+      <textarea id="note" rows="2" placeholder="补充说明（可选）：如「只批改第 1-5 题」「第 3 题用红笔改过」"></textarea>
+      <button id="btn-segment" class="primary">✂️ 分割题目</button>
+    </div>
+    <p class="foot-hint">题目分割在你的设备上本地完成 · 批改结果保存在本机</p>
+  </section>
+
+  <!-- 第 2 步：确认裁剪 -->
+  <section id="view-crops" class="view hidden">
+    <div class="card tip">已按题号分割完成，点一下可 <b>取消 / 勾选</b> 要批改的题。分得不对就取消它，或改选「整页」。</div>
+    <div id="crops-grid" class="crops-grid"></div>
+    <div class="row-btns">
+      <button id="btn-back" class="ghost">← 重新上传</button>
+      <button id="btn-grade" class="primary">🤖 开始批改</button>
+    </div>
+  </section>
+
+  <!-- 第 3 步：结果 -->
+  <section id="view-result" class="view hidden">
+    <div id="progress" class="card progress">
+      <div class="spinner"></div>
+      <div id="progress-text">准备中…</div>
+    </div>
+    <div id="stream-tail-wrap" class="card stream hidden">
+      <div class="stream-label">AI 实时输出</div>
+      <pre id="stream-tail"></pre>
+    </div>
+    <div id="summary" class="card summary hidden"></div>
+    <div id="questions"></div>
+    <button id="btn-again" class="primary hidden">📷 再批一份</button>
+  </section>
+</main>
+
+<!-- 历史抽屉 -->
+<div id="drawer-mask" class="drawer-mask hidden"></div>
+<div id="history-drawer" class="drawer hidden">
+  <div class="drawer-head"><b>批改历史</b><button id="btn-close-history" class="icon-btn">✕</button></div>
+  <div id="history-list"></div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+<script src="app.js"></script>
+</body>
+</html>
